@@ -1,0 +1,98 @@
+body {
+  background-color: #f6f8fa;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+h1{
+  text-align: center;
+  color: cadetblue;
+}
+
+/* Caixa centralizada */
+#container {
+  margin: 0 auto; 
+  max-width: 300px; 
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: white; 
+ 
+}
+
+/* Centralizar conteúdo dentro da caixa */
+#container > * {
+  text-align: center;
+}
+
+/* Área de mensagens */
+#mensagens {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 300px;
+  background-color: #f1f1f1;
+  color: black;
+}
+
+#mensagens li {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 5px;
+  color: black; 
+}
+
+/* Formulário de envio */
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed; 
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%); 
+}
+
+#nome, #mensagem {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#mensagem {
+  height: 50px;
+}
+
+button {
+  background-color: green;
+  color: white;
+  border: 1px solid green;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Personalização adicional */
+.nome {
+  font-weight: bold;
+}
+
+#nome {
+  width: max-content;
+}
+
+.mensagem {
+  color: black;
+}
+
+.timestamp {
+  font-size: 11px;
+  color: #999;
+  float: right;
+}

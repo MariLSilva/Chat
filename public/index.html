@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bate Papo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body> 
+    <h1>Sala de Bate papo</h1> 
+    <div id="container">
+      
+            <input type="text" id="nome" placeholder="Nome de usuario"><br><br>
+            <ul id="mensagens"></ul> 
+            <input type="text" id="mensagem" placeholder="Mensagem">
+            <button id="enviar">Enviar</button>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        //CRiar uma isntancia do socket.io
+        const socket = io();
+        //Seleciona o valor do input nome de usuário
+        const nomeInput = document.getElementById('nome');
+        //Seleciona o valor do input da mensagem
+        const mensagemInput = document.getElementById('mensagem');
+        //Seleciona  alista de mensagem
+        const mensagens = document.getElementById('mensagens');
+        // Selecionar o botão de enviar
+        const enviarBtn = document.getElementById('enviar')
+
+        enviarBtn.addEventListener('click', enviarMensagem);
+
+        // Adicionar evento de pressionar a tecla "Enter" no campo de mensagem
+        mensagemInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                enviarMensagem();
+            }
+        });
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+        function enviarMensagem() {
+            const nome = nomeInput.value;
+            const mensagem = mensagemInput.value;
+
+            // Verificar se os valores estão preenchidos
+            if (nome.trim() && mensagem.trim()) {
+                // Enviar a mensagem via socket
+                socket.emit('chat message', { nome, mensagem });
+                // Limpar o input da mensagem
+                mensagemInput.value = '';
+                // Desabilitar o input do usuário
+                nomeInput.disabled = true;
+            }
+        }
+
+        
+        socket.on('chat message', dados =>{
+            // Verificar se já existe uma cor atribuída ao nome do usuário
+            let corUsuario = localStorage.getItem(dados.nome);
+
+            if (!corUsuario) {
+                // Se não houver uma cor atribuída, gerar uma nova cor
+                corUsuario = getRandomColor();
+                // Salvar a cor no armazenamento local para uso futuro
+                localStorage.setItem(dados.nome, corUsuario);
+            }
+
+            //Criar um elemento de lista para exibir a mensagem
+            const lista =  document.createElement('li');
+            //Define o texto da mensagem
+            //lista.textContent = `${dados.nome}: ${dados.mensagem}`;
+            lista.innerHTML = `<span style="color: ${corUsuario};">${dados.nome}:</span> ${dados.mensagem}`;
+            //Adicionar o elemento de lista de mensagem
+            mensagens.appendChild(lista);
+
+            mensagens.scrollTop = mensagens.scrollHeight;
+        });
+    </script>
+</body>
+</html>
